@@ -36,42 +36,42 @@ export default function ExplorerPage() {
     }
 
     return (
-        <Card className="h-full flex flex-col m-2 border-dashed border-2">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-primary" />
+        <Card className="h-full flex flex-col m-2 border-dashed border-2 border-orange-200 bg-white shadow-md">
+            <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50">
+                <CardTitle className="flex items-center gap-2 text-blue-900">
+                    <FileText className="h-5 w-5 text-orange-500" />
                     Explorateur de Documents
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-gray-600">
                     Mettez en ligne les listes de familles et inventaires (PDF).
                 </CardDescription>
             </CardHeader>
-            <CardContent className="flex-1 flex flex-col gap-4 overflow-hidden">
+            <CardContent className="flex-1 flex flex-col gap-4 overflow-hidden p-4">
                 {/* Upload Area */}
                 <div className="flex items-center justify-center w-full">
-                    <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 transition-colors">
+                    <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-32 border-2 border-orange-300 border-dashed rounded-lg cursor-pointer bg-orange-50 hover:bg-orange-100 transition-colors">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                             {isUploading ? (
-                                <Loader2 className="w-8 h-8 mb-4 text-gray-500 animate-spin" />
+                                <Loader2 className="w-8 h-8 mb-4 text-orange-500 animate-spin" />
                             ) : (
-                                <Upload className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" />
+                                <Upload className="w-8 h-8 mb-4 text-orange-500" />
                             )}
-                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour uploader</span> ou glissez-déposez</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">PDF uniquement (MAX. 5MB)</p>
+                            <p className="mb-2 text-sm text-gray-700"><span className="font-semibold">Cliquez pour uploader</span> ou glissez-déposez</p>
+                            <p className="text-xs text-gray-600">PDF (MAX. 5MB)</p>
                         </div>
                         <Input id="dropzone-file" type="file" accept=".pdf" className="hidden" onChange={handleUpload} disabled={isUploading} />
                     </label>
                 </div>
 
                 {/* File List */}
-                <div className="font-semibold text-sm text-muted-foreground mt-2">Fichiers traités</div>
+                <div className="font-semibold text-sm text-blue-900 mt-2">Fichiers traités</div>
                 <ScrollArea className="flex-1 pr-4">
                     <div className="grid grid-cols-1 gap-2">
                         {pdfs.map((pdf, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-3 bg-muted rounded-md border">
+                            <div key={idx} className="flex items-center justify-between p-3 bg-gradient-to-r from-orange-50 to-amber-50 rounded-md border border-orange-200">
                                 <div className="flex items-center gap-2 overflow-hidden">
-                                    <FileText className="h-4 w-4 shrink-0" />
-                                    <span className="text-sm truncate">{pdf.name}</span>
+                                    <FileText className="h-4 w-4 shrink-0 text-orange-500" />
+                                    <span className="text-sm truncate text-gray-700">{pdf.name}</span>
                                 </div>
                                 <span className={`text-xs px-2 py-0.5 rounded-full ${pdf.status === 'processed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
                                     {pdf.status === 'processed' ? 'Traité' : 'En cours...'}
@@ -82,10 +82,10 @@ export default function ExplorerPage() {
                         {/* Mock Data for demo if empty */}
                         {pdfs.length === 0 && (
                             <>
-                                <div className="flex items-center justify-between p-3 bg-muted rounded-md border opacity-60">
+                                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-orange-50 to-amber-50 rounded-md border border-orange-200 opacity-60">
                                     <div className="flex items-center gap-2">
-                                        <FileText className="h-4 w-4" />
-                                        <span className="text-sm">familles_quartier_nord.pdf</span>
+                                        <FileText className="h-4 w-4 text-orange-500" />
+                                        <span className="text-sm text-gray-700">familles_quartier_nord.pdf</span>
                                     </div>
                                     <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">Exemple</span>
                                 </div>

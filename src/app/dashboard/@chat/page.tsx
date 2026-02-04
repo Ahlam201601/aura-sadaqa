@@ -52,25 +52,25 @@ export default function ChatPage() {
     }
 
     return (
-        <Card className="h-full flex flex-col m-2 border-primary/20 shadow-lg relative overflow-hidden">
+        <Card className="h-full flex flex-col m-2 border-orange-200 shadow-lg relative overflow-hidden bg-white">
             {/* Decorative background */}
             <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-                <Moon className="w-64 h-64 text-primary" />
+                <Moon className="w-64 h-64 text-orange-500" />
             </div>
 
-            <CardHeader className="border-b bg-muted/20">
-                <CardTitle className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-primary" />
+            <CardHeader className="border-b bg-gradient-to-r from-blue-900 to-blue-800">
+                <CardTitle className="flex items-center gap-2 text-white">
+                    <Sparkles className="h-5 w-5 text-orange-400" />
                     Assistant Aura
                 </CardTitle>
             </CardHeader>
 
-            <CardContent className="flex-1 p-0 overflow-hidden relative">
+            <CardContent className="flex-1 p-0 overflow-hidden relative bg-gradient-to-b from-orange-50 to-white">
                 <ScrollArea className="h-full p-4">
                     <div className="flex flex-col gap-4">
                         {messages.length === 0 && (
-                            <div className="flex h-full flex-col items-center justify-center text-center text-muted-foreground p-8 opacity-50 mt-10">
-                                <Moon className="h-12 w-12 mb-4 animate-pulse" />
+                            <div className="flex h-full flex-col items-center justify-center text-center text-gray-600 p-8 opacity-50 mt-10">
+                                <Moon className="h-12 w-12 mb-4 animate-pulse text-orange-500" />
                                 <p>Posez une question sur vos listes de bénéficiaires...</p>
                             </div>
                         )}
@@ -86,8 +86,8 @@ export default function ChatPage() {
                                 >
                                     <div
                                         className={`max-w-[80%] rounded-lg px-4 py-2 shadow-sm ${msg.role === "user"
-                                                ? "bg-primary text-primary-foreground rounded-tr-none"
-                                                : "bg-muted text-foreground rounded-tl-none"
+                                                ? "bg-orange-500 text-white rounded-tr-none"
+                                                : "bg-white border border-orange-200 text-gray-800 rounded-tl-none"
                                             }`}
                                     >
                                         {msg.content}
@@ -103,9 +103,9 @@ export default function ChatPage() {
                                 animate={{ opacity: 1 }}
                                 className="flex justify-start"
                             >
-                                <div className="bg-muted px-4 py-3 rounded-lg rounded-tl-none flex items-center gap-2">
-                                    <Moon className="h-4 w-4 text-primary animate-spin" />
-                                    <span className="text-xs text-muted-foreground">Analyse en cours...</span>
+                                <div className="bg-white border border-orange-200 px-4 py-3 rounded-lg rounded-tl-none flex items-center gap-2">
+                                    <Moon className="h-4 w-4 text-orange-500 animate-spin" />
+                                    <span className="text-xs text-gray-600">Analyse en cours...</span>
                                 </div>
                             </motion.div>
                         )}
@@ -114,7 +114,7 @@ export default function ChatPage() {
                 </ScrollArea>
             </CardContent>
 
-            <CardFooter className="p-4 border-t bg-background">
+            <CardFooter className="p-4 border-t bg-gradient-to-r from-orange-50 to-amber-50">
                 <form
                     className="flex w-full items-center gap-2"
                     onSubmit={(e) => {
@@ -126,10 +126,15 @@ export default function ChatPage() {
                         placeholder="Rechercher une famille, un besoin..."
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        className="flex-1"
+                        className="flex-1 border-orange-200 focus:border-orange-400"
                         disabled={isLoading}
                     />
-                    <Button type="submit" size="icon" disabled={isLoading || !inputValue.trim()}>
+                    <Button 
+                        type="submit" 
+                        size="icon" 
+                        disabled={isLoading || !inputValue.trim()}
+                        className="bg-orange-500 hover:bg-orange-600 text-white"
+                    >
                         <Send className="h-4 w-4" />
                         <span className="sr-only">Envoyer</span>
                     </Button>

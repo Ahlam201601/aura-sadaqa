@@ -21,14 +21,16 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.30.0",
+    "fs": "^0.0.1-security",
     "lucide-react": "^0.563.0",
     "next": "16.1.6",
-    "pdf-parse": "^2.4.5",
+    "pdf-parse-new": "^2.0.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.71.1",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "xlsx": "^0.18.5",
     "zod": "^4.3.6"
   },
   "devDependencies": {

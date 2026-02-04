@@ -19,9 +19,6 @@ interface SadaqaContextType {
     setIsLoading: (loading: boolean) => void
     pdfs: PdfFile[]
     addPdf: (file: File) => Promise<void>
-    user: { name: string; email: string } | null
-    login: (name: string, email: string) => void
-    logout: () => void
 }
 
 const SadaqaContext = createContext<SadaqaContextType | undefined>(undefined)
@@ -30,7 +27,6 @@ export function SadaqaProvider({ children }: { children: ReactNode }) {
     const [messages, setMessages] = useState<Message[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [pdfs, setPdfs] = useState<PdfFile[]>([])
-    const [user, setUser] = useState<{ name: string; email: string } | null>(null)
 
     const addMessage = (msg: Message) => {
         setMessages((prev) => [...prev, msg])
@@ -47,16 +43,8 @@ export function SadaqaProvider({ children }: { children: ReactNode }) {
         }, 2000)
     }
 
-    const login = (name: string, email: string) => {
-        setUser({ name, email })
-    }
-
-    const logout = () => {
-        setUser(null)
-    }
-
     return (
-        <SadaqaContext.Provider value={{ messages, addMessage, isLoading, setIsLoading, pdfs, addPdf, user, login, logout }}>
+        <SadaqaContext.Provider value={{ messages, addMessage, isLoading, setIsLoading, pdfs, addPdf }}>
             {children}
         </SadaqaContext.Provider>
     )
