@@ -10,7 +10,7 @@ export async function chatAction(message: string) {
     try {
         // 1. Generate embedding for query
         // 1. Generate embedding for query
-        const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
+        const model = genAI.getGenerativeModel({ model: "gemini-embedding-001" });
         const result = await model.embedContent(message);
         console.log("DEBUG: Chat Embedding generated");
         const embedding = Array.from(result.embedding.values);

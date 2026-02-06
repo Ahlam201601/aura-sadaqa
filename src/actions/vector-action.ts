@@ -47,7 +47,7 @@ export async function processPdfAction(formData: FormData) {
 
         // Generate Embedding
         // Generate Embedding
-        const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
+        const model = genAI.getGenerativeModel({ model: "gemini-embedding-001" });
         const result = await model.embedContent(text);
         if (!result.embedding || !result.embedding.values) {
             throw new Error("Failed to generate embedding")

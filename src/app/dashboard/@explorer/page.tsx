@@ -43,7 +43,7 @@ export default function ExplorerPage() {
                     Explorateur de Documents
                 </CardTitle>
                 <CardDescription className="text-gray-600">
-                    Mettez en ligne les listes de familles et inventaires (PDF).
+                    Mettez en ligne les listes de familles et inventaires (PDF, Excel).
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col gap-4 overflow-hidden p-4">
@@ -57,9 +57,9 @@ export default function ExplorerPage() {
                                 <Upload className="w-8 h-8 mb-4 text-orange-500" />
                             )}
                             <p className="mb-2 text-sm text-gray-700"><span className="font-semibold">Cliquez pour uploader</span> ou glissez-déposez</p>
-                            <p className="text-xs text-gray-600">PDF (MAX. 5MB)</p>
+                            <p className="text-xs text-gray-600">PDF et Excel (MAX. 5MB)</p>
                         </div>
-                        <Input id="dropzone-file" type="file" accept=".pdf" className="hidden" onChange={handleUpload} disabled={isUploading} />
+                        <Input id="dropzone-file" type="file" accept=".pdf,.xls,.xlsx" className="hidden" onChange={handleUpload} disabled={isUploading} />
                     </label>
                 </div>
 
