@@ -2,12 +2,11 @@
 
 import { useState } from "react"
 import { useSadaqa } from "@/components/context/sadaqa-context"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Upload, FileText, Loader2 } from "lucide-react"
+import { Upload, FileText, Loader2, Search, CheckCircle2, Clock } from "lucide-react"
 import { processPdfAction } from "@/actions/vector-action"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function ExplorerPage() {
     const { pdfs, addPdf } = useSadaqa()
@@ -17,83 +16,109 @@ export default function ExplorerPage() {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0]
             setIsUploading(true)
-
-            // 1. Add to context (optimistic UI)
             await addPdf(file)
-
-            // 2. Send to Server Action
             const formData = new FormData()
             formData.append("file", file)
             const result = await processPdfAction(formData)
-
-            if (!result.success) {
-                console.error(result.message)
-                // Handle error state in context if needed
-            }
-
+            if (!result.success) console.error(result.message)
             setIsUploading(false)
         }
     }
 
     return (
-        <Card className="h-full flex flex-col m-2 border-dashed border-2 border-orange-200 bg-white shadow-md">
-            <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50">
-                <CardTitle className="flex items-center gap-2 text-blue-900">
-                    <FileText className="h-5 w-5 text-orange-500" />
-                    Explorateur de Documents
-                </CardTitle>
-                <CardDescription className="text-gray-600">
-                    Mettez en ligne les listes de familles et inventaires (PDF, Excel).
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="flex-1 flex flex-col gap-4 overflow-hidden p-4">
-                {/* Upload Area */}
-                <div className="flex items-center justify-center w-full">
-                    <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-32 border-2 border-orange-300 border-dashed rounded-lg cursor-pointer bg-orange-50 hover:bg-orange-100 transition-colors">
-                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                            {isUploading ? (
-                                <Loader2 className="w-8 h-8 mb-4 text-orange-500 animate-spin" />
-                            ) : (
-                                <Upload className="w-8 h-8 mb-4 text-orange-500" />
-                            )}
-                            <p className="mb-2 text-sm text-gray-700"><span className="font-semibold">Cliquez pour uploader</span> ou glissez-déposez</p>
-                            <p className="text-xs text-gray-600">PDF et Excel (MAX. 5MB)</p>
+        <div className="h-full flex flex-col p-2">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex-1 flex flex-col bg-[#0f393b]/60 backdrop-blur-xl rounded-[24px] border border-[#f59e0b]/20 shadow-2xl relative overflow-hidden"
+            >
+                {/* Background Image - Islamic Pattern */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="/ramadan-islamic-pattern.png"
+                        alt=""
+                        className="w-full h-full object-cover opacity-20"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-[#0f393b]/90 to-[#020617]" />
+                </div>
+                {/* Header */}
+                <div className="relative z-10 px-6 py-6 border-b border-[#f59e0b]/10 bg-[#020617]/40 backdrop-blur-sm">
+                    <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-[#f59e0b]/10 flex items-center justify-center border border-[#f59e0b]/20">
+                            <FileText className="h-5 w-5 text-[#f59e0b]" />
                         </div>
-                        <Input id="dropzone-file" type="file" accept=".pdf,.xls,.xlsx" className="hidden" onChange={handleUpload} disabled={isUploading} />
-                    </label>
+                        <div>
+                            <h2 className="text-xl font-serif text-white tracking-wide">Documents</h2>
+                            <p className="text-xs text-teal-200/50 uppercase tracking-widest">Base de connaissances</p>
+                        </div>
+                    </div>
                 </div>
 
-                {/* File List */}
-                <div className="font-semibold text-sm text-blue-900 mt-2">Fichiers traités</div>
-                <ScrollArea className="flex-1 pr-4">
-                    <div className="grid grid-cols-1 gap-2">
-                        {pdfs.map((pdf, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-3 bg-gradient-to-r from-orange-50 to-amber-50 rounded-md border border-orange-200">
-                                <div className="flex items-center gap-2 overflow-hidden">
-                                    <FileText className="h-4 w-4 shrink-0 text-orange-500" />
-                                    <span className="text-sm truncate text-gray-700">{pdf.name}</span>
-                                </div>
-                                <span className={`text-xs px-2 py-0.5 rounded-full ${pdf.status === 'processed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                                    {pdf.status === 'processed' ? 'Traité' : 'En cours...'}
-                                </span>
-                            </div>
-                        ))}
+                {/* Content */}
+                <div className="flex-1 flex flex-col p-6 gap-6 relative z-10">
 
-                        {/* Mock Data for demo if empty */}
-                        {pdfs.length === 0 && (
-                            <>
-                                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-orange-50 to-amber-50 rounded-md border border-orange-200 opacity-60">
-                                    <div className="flex items-center gap-2">
-                                        <FileText className="h-4 w-4 text-orange-500" />
-                                        <span className="text-sm text-gray-700">familles_quartier_nord.pdf</span>
-                                    </div>
-                                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">Exemple</span>
-                                </div>
-                            </>
-                        )}
+                    {/* Search */}
+                    <div className="relative">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#f59e0b]/40" />
+                        <Input
+                            placeholder="Rechercher..."
+                            className="bg-[#020617]/40 border-[#f59e0b]/10 rounded-xl h-12 pl-11 text-white placeholder:text-teal-200/20 focus:border-[#f59e0b]/40 focus:ring-1 focus:ring-[#f59e0b]/40 transition-all hover:bg-[#020617]/50"
+                        />
                     </div>
-                </ScrollArea>
-            </CardContent>
-        </Card>
+
+                    {/* Upload Dropzone - Elegant */}
+                    <label className="group relative flex flex-col items-center justify-center w-full h-32 rounded-2xl cursor-pointer overflow-hidden transition-all duration-300 border border-dashed border-[#f59e0b]/20 hover:border-[#f59e0b]/50 hover:bg-[#f59e0b]/5 bg-[#020617]/20">
+                        <div className="flex flex-col items-center justify-center gap-2">
+                            {isUploading ? (
+                                <Loader2 className="w-8 h-8 text-[#f59e0b] animate-spin" />
+                            ) : (
+                                <div className="h-10 w-10 rounded-full bg-teal-900/50 flex items-center justify-center border border-white/5 group-hover:scale-110 transition-transform">
+                                    <Upload className="w-5 h-5 text-[#f59e0b]/80" />
+                                </div>
+                            )}
+                            <p className="text-sm text-teal-100/70 group-hover:text-[#f59e0b] transition-colors">Importer PDF ou Excel</p>
+                        </div>
+                        <Input type="file" accept=".pdf,.xls,.xlsx" className="hidden" onChange={handleUpload} disabled={isUploading} />
+                    </label>
+
+                    {/* List */}
+                    <div className="flex-1 flex flex-col min-h-0">
+                        <h3 className="text-[10px] font-bold text-teal-200/30 uppercase tracking-widest mb-3 pl-1">Fichiers Récents</h3>
+                        <ScrollArea className="flex-1 -mx-2 px-2">
+                            <div className="space-y-2 pb-4">
+                                <AnimatePresence>
+                                    {pdfs.map((pdf, idx) => (
+                                        <motion.div
+                                            key={idx}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: idx * 0.05 }}
+                                            className="flex items-center justify-between p-3.5 bg-white/[0.03] hover:bg-white/[0.06] rounded-xl border border-white/5 transition-colors group cursor-pointer"
+                                        >
+                                            <div className="flex items-center gap-3 overflow-hidden">
+                                                <div className="h-8 w-8 rounded-lg bg-teal-950 flex items-center justify-center shrink-0 border border-white/5">
+                                                    <FileText className="h-4 w-4 text-[#f59e0b] group-hover:text-[#f59e0b] transition-colors" />
+                                                </div>
+                                                <span className="text-sm text-teal-50/90 truncate font-light">{pdf.name}</span>
+                                            </div>
+                                            {pdf.status === 'processed' ? (
+                                                <CheckCircle2 className="h-4 w-4 text-[#f59e0b]/80" />
+                                            ) : (
+                                                <Clock className="h-4 w-4 text-[#f59e0b]/80 animate-pulse" />
+                                            )}
+                                        </motion.div>
+                                    ))}
+                                </AnimatePresence>
+                                {pdfs.length === 0 && (
+                                    <div className="py-8 text-center">
+                                        <p className="text-xs text-teal-200/30 italic">Aucun document.</p>
+                                    </div>
+                                )}
+                            </div>
+                        </ScrollArea>
+                    </div>
+                </div>
+            </motion.div>
+        </div>
     )
 }
